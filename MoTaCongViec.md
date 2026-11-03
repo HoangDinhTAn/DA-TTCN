@@ -1,4 +1,5 @@
 Chi tiết công việc từng Sprint 
+
 Sprint 1 (20/10 - 26/10): Tìm kiếm dữ liệu, khởi tạo môi trường, xử lý dữ liệu
 
 - Task 1.1: Cài đặt và thiết lập môi trường Anaconda (DATTCN_env), cài đặt các thư viện cần thiết.
