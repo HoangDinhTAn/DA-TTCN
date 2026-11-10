@@ -121,3 +121,4 @@ if __name__ == "__main__":
     with open(model_filename, "wb") as f:
         pickle.dump(model_data, f)
     print(f"✅ --- Đã lưu mô hình NLP thành công vào file '{model_filename}' ---")
+print(f"✅ --- Đã lưu mô hình NLP thành công vào file '{model_filename}' ---")
