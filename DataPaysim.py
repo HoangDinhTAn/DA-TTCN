@@ -5,7 +5,7 @@ print("--- BẮT ĐẦU XỬ LÝ TOÀN BỘ DỮ LIỆU PAYSIM ---")
 
 # 1. Đọc toàn bộ file dữ liệu (Bỏ tham số nrows để lấy tất cả các dòng)
 print("Đang đọc dữ liệu")
-df = pd.read_csv("data_table.csv")
+df = pd.read_csv("data_table.csv", nrows=2000000)
 print(f"Đã tải thành công! Tổng số giao dịch: {len(df):,}")
 
 # 2. Xử lý các cột dạng chữ (Categorical columns) như 'type'

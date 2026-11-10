@@ -13,7 +13,7 @@ print("--- [BƯỚC 1] KHỞI TẠO VÀ XÂY DỰNG ĐỒ THỊ PAYSIM CHO GNN -
 from DataPaysim import X, y
 
 # Đọc file dữ liệu gốc để trích xuất quan hệ tài khoản (nameOrig -> nameDest) tạo đồ thị mạng lưới
-df = pd.read_csv("data_table.csv")
+df = pd.read_csv("data_table.csv", nrows=2000000)
 
 num_nodes = X.shape[0]
 x_tensor = torch.tensor(X, dtype=torch.float32)
