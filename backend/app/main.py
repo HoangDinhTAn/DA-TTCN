@@ -97,7 +97,6 @@ async def root():
 # =====================================
 # 7. API KIỂM TRA VERSION
 # =====================================
-
 @app.get("/version")
 async def version():
 
@@ -105,4 +104,23 @@ async def version():
         "application": "Fraud Detection System",
         "version": "1.0.0",
         "framework": "FastAPI"
+    }
+
+
+# =====================================
+# 8. API THÔNG TIN HỆ THỐNG
+# =====================================
+
+@app.get("/api/v1/info")
+async def system_info():
+
+    return {
+        "system": "Fraud Detection System",
+        "backend": "FastAPI",
+        "version": "1.0.0",
+        "modules": {
+            "NLP": "Ready for integration",
+            "GNN": "Ready for integration"
+        },
+        "status": "running"
     }
