@@ -85,18 +85,15 @@ def first_line_defense_system(message: str):
 
     phishing_domains = ['-secure', '-login', '-verify', '-support', 'bank-', 'vcb-', 'techcom-', 'mbbank-']
     has_phishing_domain = any(domain in msg_lower for domain in phishing_domains)
-
     entity_penalty = 0.0
     if detected_accounts: entity_penalty += 30.0 
     if detected_phones: entity_penalty += 15.0   
     if detected_urls: entity_penalty += 35.0     
     if has_phishing_domain: entity_penalty += 25.0 
-
     # --- TỔNG HỢP ĐIỂM RỦI RO ---
     base_risk = max(search_ai_score, rule_score)
     final_risk_score = min(base_risk + entity_penalty, 100.0)
     is_threat = final_risk_score >= 40.0
-
     return {
         "risk_score": round(final_risk_score, 2),
         "is_scam": is_threat,
@@ -108,7 +105,6 @@ def first_line_defense_system(message: str):
         "has_phishing_domain": has_phishing_domain,
         "warning_message": f"CẢNH BÁO: Phát hiện dấu hiệu thuộc nhóm [{matched_scenario}] giả mạo ngân hàng hoặc chứa thông tin đáng ngờ!" if is_threat else "Tin nhắn an toàn."
     }
-
 # --- 5. LƯU MÔ HÌNH NLP RA FILE .pkl ĐỂ SẴN SÀNG GỌI TRONG MAIN ---
 if __name__ == "__main__":
     model_filename = "nlp_model.pkl"
@@ -117,8 +113,6 @@ if __name__ == "__main__":
         "kb_vectors": kb_vectors,
         "knowledge_base": fraud_knowledge_base
     }
-
     with open(model_filename, "wb") as f:
         pickle.dump(model_data, f)
     print(f"✅ --- Đã lưu mô hình NLP thành công vào file '{model_filename}' ---")
-print(f"✅ --- Đã lưu mô hình NLP thành công vào file '{model_filename}' ---")
