@@ -1,0 +1,23 @@
+{
+  "10000001": {
+    "owner": "Tài khoản chính chủ",
+    "is_new_account": false,
+    "rapid_drain": false,
+    "has_history_with_user": true,
+    "base_gnn_risk": 5.0
+  },
+  "10000002": {
+    "owner": "Người thân / Đối tác quen thuộc",
+    "is_new_account": false,
+    "rapid_drain": false,
+    "has_history_with_user": true,
+    "base_gnn_risk": 8.0
+  },
+  "99998888": {
+    "owner": "Tài khoản lạ / Nghi vấn gian lận",
+    "is_new_account": true,
+    "rapid_drain": true,
+    "has_history_with_user": false,
+    "base_gnn_risk": 92.0
+  }
+}
