@@ -3,7 +3,7 @@ from sklearn.preprocessing import StandardScaler
 print("--- BẮT ĐẦU XỬ LÝ TOÀN BỘ DỮ LIỆU PAYSIM ---")
 # 1. Đọc toàn bộ file dữ liệu (Bỏ tham số nrows để lấy tất cả các dòng)
 print("Đang đọc dữ liệu")
-df = pd.read_csv("data_table.csv", nrows=100000)
+df = pd.read_csv("data_table.csv", nrows=2000000)
 print("\n5 dòng đầu:")
 print(df.head())
 print(f"Đã tải thành công! Tổng số giao dịch: {len(df):,}")

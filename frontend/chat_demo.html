@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mẹ & Con — Hội thoại & Bảo vệ tin nhắn</title>
+  <link rel="stylesheet" href="chat_demo.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Bảng giả lập tin nhắn tới bên ngoài -->
+    <aside class="sim-drawer">
+      <div class="sim-title">Giả lập tin nhắn tới</div>
+      <p class="sim-sub">Nhập tin nhắn đóng vai người gửi đến rồi bấm gửi để kiểm tra ngầm.</p>
+
+      <label class="field-lbl" for="simApiUrl">API Backend</label>
+      <input type="text" id="simApiUrl" value="http://127.0.0.1:8000/api/v1/analyze" />
+
+      <label class="field-lbl" for="simSender">Người gửi đến</label>
+      <input type="text" id="simSender" value="Con gái" />
+
+      <label class="field-lbl" for="simMessage">Nội dung tin nhắn đến</label>
+      <textarea
+        id="simMessage"
+        rows="4"
+        placeholder="Gõ tin nhắn bình thường hoặc tin nhắn giả mạo chuyển tiền / phong tỏa..."
+      ></textarea>
+
+      <div class="field-row">
+        <div>
+          <label class="field-lbl" for="simAccount">STK (tùy chọn)</label>
+          <input type="text" id="simAccount" placeholder="Tự bóc tách" />
+        </div>
+        <div>
+          <label class="field-lbl" for="simAmount">Số tiền (VNĐ)</label>
+          <input type="number" id="simAmount" value="0" min="0" step="1000" />
+        </div>
+      </div>
+
+      <div class="quick-pills">
+        <button type="button" class="pill" data-case="mom1">Hỏi cơm tối</button>
+        <button type="button" class="pill" data-case="friend1">Bạn rủ cà phê</button>
+        <button type="button" class="pill" data-case="scam">Tin nhắn lừa đảo</button>
+      </div>
+
+      <button type="button" id="sendIncomingBtn" class="btn-send">Gửi tin nhắn tới</button>
+      <div id="simError" class="sim-error hidden"></div>
+    </aside>
+
+    <!-- Khung chat chính -->
+    <main class="chat-panel">
+      <header class="chat-header">
+        <div class="contact">
+          <div class="avatar">MC</div>
+          <div>
+            <div class="contact-name">Gia đình &amp; Bạn bè</div>
+            <div class="contact-sub">Đang hoạt động</div>
+          </div>
+        </div>
+        <button type="button" id="resetChatBtn" class="btn-subtle">Đặt lại hội thoại</button>
+      </header>
+
+      <!-- Chỉ hiện khi có tin nhắn bị phát hiện dấu hiệu lừa đảo -->
+      <div id="scamTopBanner" class="scam-top-banner hidden" role="alert">
+        <span id="scamTopText"></span>
+        <button type="button" id="closeBannerBtn" class="banner-close">Ẩn</button>
+      </div>
+
+      <div id="messageList" class="message-list"></div>
+
+      <footer class="reply-bar">
+        <input
+          type="text"
+          id="replyInput"
+          placeholder="Nhập tin nhắn trả lời..."
+          autocomplete="off"
+        />
+        <button type="button" id="sendReplyBtn" class="btn-reply">Gửi</button>
+      </footer>
+    </main>
+  </div>
+
+  <script src="chat_demo.js"></script>
+</body>
+</html>
