@@ -3,82 +3,506 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mẹ & Con — Hội thoại & Bảo vệ tin nhắn</title>
+  <title>Veridian Guard — Hệ Thống Bảo Vệ Tin Nhắn & Giao Dịch (NLP + GNN)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="chat_demo.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <!-- Bảng giả lập tin nhắn tới bên ngoài -->
-    <aside class="sim-drawer">
-      <div class="sim-title">Giả lập tin nhắn tới</div>
-      <p class="sim-sub">Nhập tin nhắn đóng vai người gửi đến rồi bấm gửi để kiểm tra ngầm.</p>
-
-      <label class="field-lbl" for="simApiUrl">API Backend</label>
-      <input type="text" id="simApiUrl" value="http://127.0.0.1:8000/api/v1/analyze" />
-
-      <label class="field-lbl" for="simSender">Người gửi đến</label>
-      <input type="text" id="simSender" value="Con gái" />
-
-      <label class="field-lbl" for="simMessage">Nội dung tin nhắn đến</label>
-      <textarea
-        id="simMessage"
-        rows="4"
-        placeholder="Gõ tin nhắn bình thường hoặc tin nhắn giả mạo chuyển tiền / phong tỏa..."
-      ></textarea>
-
-      <div class="field-row">
-        <div>
-          <label class="field-lbl" for="simAccount">STK (tùy chọn)</label>
-          <input type="text" id="simAccount" placeholder="Tự bóc tách" />
-        </div>
-        <div>
-          <label class="field-lbl" for="simAmount">Số tiền (VNĐ)</label>
-          <input type="number" id="simAmount" value="0" min="0" step="1000" />
-        </div>
+  <header class="topbar">
+    <div class="brand" onclick="switchView('view-home')">
+      <div class="brand-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M12 8v4m0 4h.01" />
+        </svg>
       </div>
-
-      <div class="quick-pills">
-        <button type="button" class="pill" data-case="mom1">Hỏi cơm tối</button>
-        <button type="button" class="pill" data-case="friend1">Bạn rủ cà phê</button>
-        <button type="button" class="pill" data-case="scam">Tin nhắn lừa đảo</button>
+      <div>
+        <span class="brand-name">Mobile Banking Security</span>
+        <span class="brand-sub">NLP + GNN</span>
       </div>
+    </div>
 
-      <button type="button" id="sendIncomingBtn" class="btn-send">Gửi tin nhắn tới</button>
-      <div id="simError" class="sim-error hidden"></div>
-    </aside>
+    <nav class="nav-pills" role="tablist">
+      <button class="nav-btn active" data-view="view-home">Trang chủ</button>
+      <button class="nav-btn" data-view="view-chat">
+        Hội thoại (NLP)
+        <span id="badgeChat" class="pill-alert hidden">!</span>
+      </button>
+      <button class="nav-btn" data-view="view-bank">
+        Chuyển khoản (GNN)
+        <span id="badgeBank" class="pill-alert hidden">STK</span>
+      </button>
+      <button class="nav-btn" data-view="view-jury">Thông số trực quan</button>
+    </nav>
 
-    <!-- Khung chat chính -->
-    <main class="chat-panel">
-      <header class="chat-header">
-        <div class="contact">
-          <div class="avatar">MC</div>
-          <div>
-            <div class="contact-name">Gia đình &amp; Bạn bè</div>
-            <div class="contact-sub">Đang hoạt động</div>
+    <div class="api-box" title="Endpoint Backend FastAPI">
+      <span class="pulse-dot"></span>
+      <input type="text" id="apiEndpoint" value="http://127.0.0.1:8000/api/v1/analyze" />
+    </div>
+  </header>
+
+  <!-- =========================================================
+       TRANG CHỦ GIỚI THIỆU
+       ========================================================= -->
+  <section id="view-home" class="view-section active">
+    <div class="home-wrap">
+      <div class="hero-panel">
+        <div class="hero-tag">Đồ án chuyên ngành</div>
+        <h1>Chấm Điểm Rủi Ro Giao Dịch Tài Chính Bằng <span>NLP &amp; GNN</span></h1>
+        <p class="hero-copy">
+          Nền tảng phân tích rủi ro đa tầng kết hợp <strong>Xử lý Ngôn ngữ Tự nhiên (NLP)</strong> để phát hiện kịch bản thao túng, giả mạo trong tin nhắn và <strong>Mạng Nơ-ron Đồ thị (GNN)</strong> để đánh giá mạng lưới tài khoản nhận tiền trước khi giao dịch được thực hiện.
+        </p>
+        <div class="hero-btns">
+          <button class="btn-teal" onclick="switchView('view-chat')">Hội thoại &amp; Chuyển khoản →</button>
+          <button class="btn-ghost" onclick="switchView('view-jury')">Bảng thông số trực quan</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="h-stat">
+            <strong>NLP + GNN</strong>
+            <span>Đánh giá song hành ngữ cảnh &amp; đồ thị</span>
+          </div>
+          <div class="h-stat">
+            <strong>Auto-Link</strong>
+            <span>Tự động chuyển STK bóc tách sang GNN</span>
+          </div>
+          <div class="h-stat">
+            <strong>Silent Safe</strong>
+            <span>Không làm phiền khi tin nhắn bình thường</span>
+          </div>
+          <div class="h-stat">
+            <strong>Real-time Lock</strong>
+            <span>Chặn ngay giao dịch có dấu hiệu lừa đảo</span>
           </div>
         </div>
-        <button type="button" id="resetChatBtn" class="btn-subtle">Đặt lại hội thoại</button>
-      </header>
-
-      <!-- Chỉ hiện khi có tin nhắn bị phát hiện dấu hiệu lừa đảo -->
-      <div id="scamTopBanner" class="scam-top-banner hidden" role="alert">
-        <span id="scamTopText"></span>
-        <button type="button" id="closeBannerBtn" class="banner-close">Ẩn</button>
       </div>
 
-      <div id="messageList" class="message-list"></div>
+      <div class="sec-title">
+        <h2>Kiến Trúc 3 Phân Hệ Liên Kết</h2>
+        <p>Mỗi phân hệ đảm nhiệm một mắt xích khép kín từ phát hiện tin nhắn tới kiểm soát giao dịch</p>
+      </div>
 
-      <footer class="reply-bar">
-        <input
-          type="text"
-          id="replyInput"
-          placeholder="Nhập tin nhắn trả lời..."
-          autocomplete="off"
-        />
-        <button type="button" id="sendReplyBtn" class="btn-reply">Gửi</button>
-      </footer>
-    </main>
-  </div>
+      <div class="feature-grid">
+        <div class="feature-card" onclick="switchView('view-chat')">
+          <div>
+            <span class="f-kicker">01 • NLP ENGINE</span>
+            <h3>Khung Chat &amp; Bóc Tách Thực Thể</h3>
+            <p>
+              Trò chuyện gia đình, bạn bè tự nhiên trên nền tối ấm. Tin nhắn thường hiển thị gọn gàng; tin nhắn nghi lừa đảo bật cảnh báo trực tiếp ngay trên bong bóng chat và trích xuất STK.
+            </p>
+          </div>
+          <span class="f-link">Hội thoại →</span>
+        </div>
+
+        <div class="feature-card" onclick="switchView('view-bank')">
+          <div>
+            <span class="f-kicker">02 • GNN TRANSACTION GUARD</span>
+            <h3>Giao Diện Chuyển Khoản Ngân Hàng</h3>
+            <p>
+              Tiếp nhận STK từ hội thoại hoặc nhập tài khoản đích. GNN phân tích đồ thị giao dịch để chặn lệnh chuyển khi phát hiện rủi ro hoặc hoàn tất chuyển tiền khi an toàn.
+            </p>
+          </div>
+          <span class="f-link">Chuyển khoản →</span>
+        </div>
+
+        <div class="feature-card" onclick="switchView('view-jury')">
+          <div>
+            <span class="f-kicker">03 • JURY TELEMETRY</span>
+            <h3>Bảng Thông Số</h3>
+            <p>
+              Hiển thị đầy đủ điểm rủi ro NLP, điểm GNN, điểm tổng hợp, quyết định cuối cùng, thực thể bóc tách, nhật ký kiểm thử và JSON phản hồi từ FastAPI.
+            </p>
+          </div>
+          <span class="f-link">Thông số →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       1. HỘI THOẠI (CHAT DEMO - NLP)
+       ========================================================= -->
+  <section id="view-chat" class="view-section">
+    <div class="chat-layout">
+      <aside class="sim-panel">
+        <div class="panel-head">
+          <h3>Giả lập tin nhắn tới</h3>
+          <p>Đóng vai người gửi đến để kiểm tra ngầm.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="chatSender">Người gửi đến</label>
+          <input type="text" id="chatSender" class="ctrl" value="Mẹ" />
+        </div>
+
+        <div class="form-group">
+          <label for="chatMessage">Nội dung tin nhắn</label>
+          <textarea
+            id="chatMessage"
+            class="ctrl"
+            rows="4"
+            placeholder="Nhập tin nhắn..."
+          ></textarea>
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label for="chatAccount">STK (tùy chọn)</label>
+            <input type="text" id="chatAccount" class="ctrl mono" placeholder="Tự bóc tách" />
+          </div>
+          <div class="form-group">
+            <label for="chatAmount">Số tiền (VNĐ)</label>
+            <input type="number" id="chatAmount" class="ctrl mono" value="0" min="0" step="1000" />
+          </div>
+        </div>
+
+        <div class="chips">
+          <button type="button" class="chip" data-sample="mom">Mẹ dặn về ăn cơm</button>
+          <button type="button" class="chip" data-sample="friend">Bạn rủ đá bóng</button>
+          <button type="button" class="chip" data-sample="scamFamily">Giả mạo người thân</button>
+          <button type="button" class="chip" data-sample="scamPolice">Giả mạo Công an</button>
+        </div>
+
+        <button type="button" id="btnSendIncoming" class="btn-teal full-w">Gửi tin nhắn tới</button>
+        <div id="chatErrorBox" class="err-box hidden"></div>
+
+        <div id="stkBridgeCard" class="bridge-card hidden">
+          <div class="bridge-hd">Đã bóc tách STK từ tin nhắn</div>
+          <div class="bridge-body">
+            STK: <strong class="mono" id="bridgeStkValue">-</strong><br />
+            Đã tự động chuyển sang màn hình Chuyển khoản để GNN đánh giá.
+          </div>
+          <button type="button" class="btn-copper full-w" onclick="switchView('view-bank')">
+            Chuyển sang Chuyển khoản (GNN) →
+          </button>
+        </div>
+      </aside>
+
+      <main class="messenger-box">
+        <header class="messenger-top">
+          <div class="thread-meta">
+            <div class="thread-avatar">HT</div>
+            <div>
+              <div class="thread-name">Cuộc Hội Thoại</div>
+              <div class="thread-status">Trực tuyến</div>
+            </div>
+          </div>
+          <button type="button" id="btnResetThread" class="btn-ghost-sm">Làm mới đoạn chat</button>
+        </header>
+
+        <div id="scamTopBanner" class="top-warning hidden" role="alert">
+          <span id="scamTopMessage"></span>
+          <button type="button" id="btnHideBanner" class="warn-close">Ẩn</button>
+        </div>
+
+        <div id="chatThread" class="chat-stream"></div>
+
+        <footer class="chat-input-bar">
+          <input
+            type="text"
+            id="replyBox"
+            class="ctrl"
+            placeholder="Nhắn tin trả lời..."
+            autocomplete="off"
+          />
+          <button type="button" id="btnSendReply" class="btn-reply-send">Gửi</button>
+        </footer>
+      </main>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       2. CHUYỂN KHOẢN NGÂN HÀNG (GNN + GRAPH INSPECTOR + LỊCH SỬ)
+       ========================================================= -->
+  <section id="view-bank" class="view-section">
+    <div class="bank-wrap-pro">
+      <!-- Cột trái: Ngữ cảnh NLP + Tài khoản mẫu + Sơ đồ đồ thị GNN -->
+      <aside class="bank-left-col">
+        <div class="card-block">
+          <div class="card-title-row">
+            <h3>Từ Hội Thoại</h3>
+            <span class="mini-tag">Sync</span>
+          </div>
+          <p class="card-sub">
+            STK bóc tách từ tin nhắn nghi vấn để GNN truy vết quan hệ.
+          </p>
+          <div id="bankLinkedBox" class="context-pill empty">
+            Chưa có STK nào được bóc tách từ Chat.
+          </div>
+        </div>
+
+        <div class="card-block">
+          <h3>Tài khoản mẫu kiểm thử GNN</h3>
+          <p class="card-sub">Chọn nhanh để kiểm thử các nút đồ thị giao dịch:</p>
+          <div class="account-list">
+            <button type="button" class="acc-btn risk" data-bank-case="fraud">
+              <span class="acc-top">
+                <strong class="mono">99998888</strong>
+                <span class="acc-tag red">Rủi ro cao</span>
+              </span>
+              <small>Nút đồ thị có liên kết gian lận</small>
+            </button>
+
+            <button type="button" class="acc-btn trust" data-bank-case="clean">
+              <span class="acc-top">
+                <strong class="mono">10000001</strong>
+                <span class="acc-tag green">Uy tín</span>
+              </span>
+              <small>Lịch sử giao dịch ổn định</small>
+            </button>
+
+            <button type="button" class="acc-btn amber" data-bank-case="fromChat">
+              <span class="acc-top">
+                <strong class="mono">76884932774</strong>
+                <span class="acc-tag amber">Từ Chat NLP</span>
+              </span>
+              <small>Kết hợp ngữ cảnh tin nhắn + đánh giá GNN</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Khối mô phỏng trực quan quan hệ đồ thị GNN -->
+        <div class="card-block graph-card">
+          <div class="card-title-row">
+            <h3>Bản đồ Quan hệ GNN</h3>
+            <span class="mini-tag copper" id="gnnGraphBadge">Chờ STK</span>
+          </div>
+          <p class="card-sub">
+            Mô phỏng cấu trúc liên kết giữa tài khoản nguồn, tài khoản đích và các nút lân cận.
+          </p>
+          <div id="gnnGraphPreview" class="graph-visual">
+            <div class="graph-node src">
+              <span class="node-role">Nguồn</span>
+              <strong class="mono">0388••6868</strong>
+            </div>
+            <div class="graph-edge">
+              <span>→</span>
+            </div>
+            <div class="graph-node dst" id="graphDstNode">
+              <span class="node-role">Đích</span>
+              <strong class="mono" id="graphDstStk">--------</strong>
+            </div>
+            <div class="graph-edge">
+              <span>↔</span>
+            </div>
+            <div class="graph-node peer" id="graphPeerNode">
+              <span class="node-role">Cụm mạng</span>
+              <strong id="graphPeerLabel">Chưa quét</strong>
+            </div>
+          </div>
+          <div id="gnnGraphMeta" class="graph-meta-line">
+            Nhập hoặc chọn STK để xem mức độ kết nối đồ thị.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Cột phải: App Ngân hàng chi tiết + Lịch sử giao dịch gần đây -->
+      <div class="bank-right-col">
+        <div class="bank-terminal-card pro">
+          <div class="bt-header">
+            <div>
+              <span class="bt-brand">MOBILE BANKING</span>
+              <span class="bt-user">Chủ tài khoản: Hoàng Đình Tấn</span>
+            </div>
+            <span class="bt-pill">GNN Shield Active</span>
+          </div>
+
+          <div class="metal-card pro">
+            <div class="mc-row">
+              <span>TÀI KHOẢN THANH TOÁN</span>
+              <span class="mono">0388 •••• 6868</span>
+            </div>
+            <div class="mc-balance" id="walletBalanceText">50.000.000 VNĐ</div>
+            <div class="mc-foot-row">
+              <span>Chuyển khoản nhanh 24/7</span>
+              <span class="mc-limit">Hạn mức: 500.000.000 VNĐ/ngày</span>
+            </div>
+          </div>
+
+          <form id="bankForm" class="transfer-form">
+            <div class="row-2">
+              <div class="t-field">
+                <label for="txBank">Ngân hàng thụ hưởng</label>
+                <select id="txBank" class="ctrl">
+                  <option value="VCB">Vietcombank (VCB)</option>
+                  <option value="ICB">VietinBank (ICB)</option>
+                  <option value="MB">MB Bank (MBB)</option>
+                  <option value="TCB">Techcombank (TCB)</option>
+                  <option value="BIDV">BIDV</option>
+                </select>
+              </div>
+
+              <div class="t-field">
+                <label for="txAccount">Số tài khoản người nhận</label>
+                <input
+                  type="text"
+                  id="txAccount"
+                  class="ctrl mono"
+                  placeholder="Nhập STK thụ hưởng"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="t-field">
+              <label for="txAmount">Số tiền giao dịch (VNĐ)</label>
+              <input
+                type="number"
+                id="txAmount"
+                class="ctrl mono"
+                value="5000000"
+                min="1000"
+                step="1000"
+                required
+              />
+              <div class="quick-amounts">
+                <button type="button" class="amt-chip" data-amt="500000">500K</button>
+                <button type="button" class="amt-chip" data-amt="2000000">2 Triệu</button>
+                <button type="button" class="amt-chip" data-amt="10000000">10 Triệu</button>
+                <button type="button" class="amt-chip" data-amt="20000000">20 Triệu</button>
+              </div>
+              <div id="amountWordsHint" class="amount-words">Bằng chữ: Năm triệu đồng</div>
+            </div>
+
+            <div class="t-field">
+              <label for="txNote">Nội dung chuyển khoản</label>
+              <input
+                type="text"
+                id="txNote"
+                class="ctrl"
+                value="Chuyen tien"
+                placeholder="Lời nhắn giao dịch"
+              />
+            </div>
+
+            <button type="submit" id="btnBankSubmit" class="btn-transfer-go">
+              Xác thực GNN &amp; Chuyển tiền
+            </button>
+          </form>
+
+          <div id="txResultModal" class="receipt-backdrop hidden">
+            <div id="txReceiptCard" class="receipt-box">
+              <div id="txReceiptIcon" class="r-icon">!</div>
+              <h4 id="txReceiptTitle">KẾT QUẢ GIAO DỊCH</h4>
+              <p id="txReceiptDesc"></p>
+              <div id="txReceiptDetails" class="r-meta"></div>
+              <div class="r-actions">
+                <button type="button" id="btnCloseReceipt" class="btn-r-back">Quay lại</button>
+                <button type="button" class="btn-r-inspect" onclick="switchView('view-jury')">
+                  Xem thông số GNN/NLP
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lịch sử giao dịch ngay dưới thẻ ngân hàng -->
+        <div class="card-block tx-history-card">
+          <div class="card-title-row">
+            <h3>Lịch sử giao dịch gần đây</h3>
+            <span class="mini-tag" id="txCountBadge">0 giao dịch</span>
+          </div>
+          <div id="bankTxHistoryList" class="tx-feed">
+            <div class="tx-feed-empty">Chưa có lệnh chuyển tiền nào được thực hiện.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       3. THÔNG SỐ CHO HỘI ĐỒNG CHẤM THI
+       ========================================================= -->
+  <section id="view-jury" class="view-section">
+    <div class="jury-wrap">
+      <div class="jury-head">
+        <div>
+          <h2>Bảng Thông Số Đánh Giá Rủi Ro</h2>
+          <p>Hiển thị điểm chấm của NLP, GNN, điểm tổng hợp, thực thể trích xuất, lịch sử phiên và JSON gốc.</p>
+        </div>
+        <button type="button" id="btnClearAudit" class="btn-ghost-sm">Xóa nhật ký</button>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <span class="k-lbl">Quyết định</span>
+          <strong class="k-val" id="metricDecision">CHƯA CÓ</strong>
+          <span class="k-sub" id="metricSource">Chờ thao tác từ Chat hoặc Chuyển khoản</span>
+        </div>
+
+        <div class="kpi-box">
+          <span class="k-lbl">Tổng Điểm Rủi Ro</span>
+          <strong class="k-val mono" id="metricFinal">0.00</strong>
+          <div class="bar-bg"><div class="bar-fill total" id="meterFinal" style="width: 0%"></div></div>
+        </div>
+
+        <div class="kpi-box">
+          <span class="k-lbl">Điểm NLP (Văn bản)</span>
+          <strong class="k-val mono" id="metricNlp">0.00</strong>
+          <div class="bar-bg"><div class="bar-fill nlp" id="meterNlp" style="width: 0%"></div></div>
+        </div>
+
+        <div class="kpi-box">
+          <span class="k-lbl">Điểm GNN (Đồ thị)</span>
+          <strong class="k-val mono" id="metricGnn">0.00</strong>
+          <div class="bar-bg"><div class="bar-fill gnn" id="meterGnn" style="width: 0%"></div></div>
+        </div>
+      </div>
+
+      <div class="jury-2col">
+        <div class="card-block">
+          <h3>Chi tiết Tầng NLP</h3>
+          <div class="kv-stack" id="specNlpList">
+            <div class="kv-empty">Chưa có dữ liệu phân tích.</div>
+          </div>
+        </div>
+
+        <div class="card-block">
+          <h3>Chi tiết Tầng GNN</h3>
+          <div class="kv-stack" id="specGnnList">
+            <div class="kv-empty">Chưa có dữ liệu phân tích.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="jury-2col">
+        <div class="card-block">
+          <h3>Nhật ký kiểm thử</h3>
+          <div class="tbl-wrap">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>Giờ</th>
+                  <th>Kênh</th>
+                  <th>STK</th>
+                  <th>Số tiền</th>
+                  <th>NLP</th>
+                  <th>GNN</th>
+                  <th>Tổng</th>
+                  <th>Quyết định</th>
+                </tr>
+              </thead>
+              <tbody id="auditTableBody">
+                <tr>
+                  <td colspan="8" class="tbl-empty">Chưa có bản ghi nào trong phiên này.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card-block">
+          <h3>JSON Phản hồi từ FastAPI</h3>
+          <pre id="auditJsonView" class="json-pre">{}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script src="chat_demo.js"></script>
 </body>
